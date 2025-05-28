@@ -1,0 +1,28 @@
+{
+  "name": "n8n-nodes-tiendanube",
+  "version": "0.1.0",
+  "description": "Nodo personalizado de n8n para TiendaNube",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "n8n-community-node-package"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "n8n-workflow": "^1.0.0",
+    "n8n-core": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  },
+  "n8n": {
+    "credentials": [
+      "dist/credentials/TiendanubeOAuth2Api.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Tiendanube/Tiendanube.node.js"
+    ]
+  }
+}
