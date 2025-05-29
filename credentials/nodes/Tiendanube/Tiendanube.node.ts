@@ -1,68 +1,68 @@
 import {
-  IExecuteFunctions,
-} from 'n8n-workflow';
+	IExecuteFunctions,
+} from 'n8n-core';
+
 import {
-  INodeTypeBase,
-  INodeTypeBaseDescription,
-  INodeExecutionData,
+	INodeExecutionData,
+	INodeType,
+	INodeTypeDescription,
 } from 'n8n-workflow';
 
-export class Tiendanube implements INodeTypeBase {
-  description: INodeTypeBaseDescription = {
-    displayName: 'TiendaNube',
-    name: 'tiendanube',
-    icon: 'file:tiendanube.svg',
-    group: ['transform'],
-    version: 1,
-    description: 'Interacción con la API de TiendaNube',
-    defaults: {
-      name: 'TiendaNube',
-    },
-    inputs: ['main' as const],
-    outputs: ['main' as const],
-    credentials: [
-      {
-        name: 'tiendanubeOAuth2Api',
-        required: true,
-      },
-    ],
-    properties: [
-      {
-        displayName: 'Operación',
-        name: 'operation',
-        type: 'options',
-        options: [
-          {
-            name: 'Obtener Productos',
-            value: 'getProducts',
-          },
-        ],
-        default: 'getProducts',
-        description: 'La operación a realizar.',
-      },
-    ],
-  };
+import { OptionsWithUri } from 'request';
 
-  async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const items = this.getInputData();
-    const returnData: INodeExecutionData[] = [];
+export class Tiendanube implements INodeType {
+	description: INodeTypeDescription = {
+		displayName: 'Tiendanube',
+		name: 'tiendanube',
+		icon: 'file:tiendanube.svg',
+		group: ['transform'],
+		description: 'Consume la API de Tiendanube',
+		defaults: {
+			name: 'Tiendanube',
+		},
+		inputs: ['main'],
+		outputs: ['main'],
+		credentials: [
+			{
+				name: 'tiendanubeApi',
+				required: true,
+			},
+		],
+		properties: [
+			{
+				displayName: 'Recurso',
+				name: 'resource',
+				type: 'options',
+				options: [
+					{
+						name: 'Productos',
+						value: 'products',
+					},
+				],
+				default: 'products',
+			},
+		],
+	};
 
-    const credentials = await this.getCredentials('tiendanubeOAuth2Api');
-    const accessToken = credentials.accessToken;
+	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+		const items = this.getInputData();
+		const returnData: INodeExecutionData[] = [];
 
-    const response = await this.helpers.requestWithAuthentication.call(this, 'tiendanubeOAuth2Api', {
-      method: 'GET',
-      url: 'https://api.tiendanube.com/v1/products',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
+		for (let i = 0; i < items.length; i++) {
+			const options: OptionsWithUri = {
+				method: 'GET',
+				uri: 'https://api.tiendanube.com/v1/products',
+				json: true,
+				headers: {
+					Authentication: 'Bearer {{your_access_token}}',
+				},
+			};
 
-    for (const product of response) {
-      returnData.push({ json: product });
-    }
+			const responseData = await this.helpers.request(options);
+			returnData.push({ json: responseData });
+		}
 
-    return [returnData];
-  }
+		return [returnData];
+	}
 }
+
