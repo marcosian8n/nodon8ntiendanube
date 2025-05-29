@@ -21,8 +21,8 @@ export class Tiendanube implements INodeType {
 		defaults: {
 			name: 'Tiendanube',
 		},
-		inputs: ['main' as NodeConnectionType],
-		outputs: ['main' as NodeConnectionType],
+		inputs: ['main'],
+		outputs: ['main'],
 
 		credentials: [
 			{
