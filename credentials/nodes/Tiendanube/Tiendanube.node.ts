@@ -1,14 +1,15 @@
-import {
-	IExecuteFunctions,
-} from 'n8n-core';
-
-import {
-	INodeExecutionData,
-	INodeType,
-	INodeTypeDescription,
+import type {
+  IExecuteFunctions,
+  INodeExecutionData,
+  INodeType,
+  INodeTypeDescription,
+  ILoadOptionsFunctions,
 } from 'n8n-workflow';
 
 import { OptionsWithUri } from 'request';
+
+import type { NodeConnectionType } from 'n8n-workflow';
+
 
 export class Tiendanube implements INodeType {
 	description: INodeTypeDescription = {
@@ -20,8 +21,9 @@ export class Tiendanube implements INodeType {
 		defaults: {
 			name: 'Tiendanube',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: ['main' as NodeConnectionType],
+		outputs: ['main' as NodeConnectionType],
+
 		credentials: [
 			{
 				name: 'tiendanubeApi',
