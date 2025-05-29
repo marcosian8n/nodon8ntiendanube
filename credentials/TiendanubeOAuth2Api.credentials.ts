@@ -4,7 +4,7 @@ import {
 } from 'n8n-workflow';
 
 export class TiendanubeOAuth2Api implements ICredentialType {
-  name = 'tiendanubeOAuth2Api';
+  name = 'tiendanubeApi';
   displayName = 'TiendaNube OAuth2 API';
   documentationUrl = 'https://dev.tiendanube.com/docs/api';
   extends = ['oAuth2Api'];
