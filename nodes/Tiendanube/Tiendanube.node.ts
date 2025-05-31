@@ -20,9 +20,8 @@ export class Tiendanube implements INodeType {
     defaults: {
       name: 'Tiendanube',
     },
-	inputs: ['main'] as NodeConnectionType[],
-	outputs: ['main'] as NodeConnectionType[],
-
+    inputs: ['main'] as NodeConnectionType[],
+    outputs: ['main'] as NodeConnectionType[],
 
     credentials: [
       {
@@ -30,6 +29,7 @@ export class Tiendanube implements INodeType {
         required: true,
       },
     ],
+
     properties: [
       {
         displayName: 'Recurso',
@@ -51,14 +51,17 @@ export class Tiendanube implements INodeType {
     const returnData: INodeExecutionData[] = [];
 
     const credentials = await this.getCredentials('tiendanubeApi');
+    const storeId = credentials.storeId as string;
+    const accessToken = credentials.accessToken as string;
 
     for (let i = 0; i < items.length; i++) {
       const options: IRequestOptions = {
         method: 'GET',
-        url: 'https://api.tiendanube.com/v1/products',
+        url: `https://api.tiendanube.com/v1/${storeId}/products`,
         json: true,
         headers: {
-          Authorization: `Bearer ${credentials.access_token}`,
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
         },
       };
 
@@ -69,4 +72,3 @@ export class Tiendanube implements INodeType {
     return [returnData];
   }
 }
-
