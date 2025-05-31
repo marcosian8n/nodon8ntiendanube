@@ -41,13 +41,16 @@ class Tiendanube {
         const items = this.getInputData();
         const returnData = [];
         const credentials = await this.getCredentials('tiendanubeApi');
+        const storeId = credentials.storeId;
+        const accessToken = credentials.accessToken;
         for (let i = 0; i < items.length; i++) {
             const options = {
                 method: 'GET',
-                url: 'https://api.tiendanube.com/v1/products',
+                url: `https://api.tiendanube.com/v1/${storeId}/products`,
                 json: true,
                 headers: {
-                    Authorization: `Bearer ${credentials.access_token}`,
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
                 },
             };
             const responseData = await this.helpers.request(options);
