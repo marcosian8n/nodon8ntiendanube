@@ -25,7 +25,7 @@
   },
   "n8n": {
     "credentials": [
-      "dist/credentials/TiendanubeOAuth2Api.credentials.js"
+      "dist/credentials/TiendanubeApi.credentials.js"
     ],
     "nodes": [
       "dist/nodes/Tiendanube/Tiendanube.node.js"
